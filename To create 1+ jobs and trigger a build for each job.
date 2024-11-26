@@ -1,0 +1,19 @@
+import jenkins.model.*
+import hudson.model.*
+import hudson.tasks.*
+import java.io.File
+
+def numJobs = 15
+def jobNamePrefix = "Testcase-"
+
+for (int i = 1; i <= numJobs; i++) {
+    def jobName = "${jobNamePrefix}${i}"
+    def job = Jenkins.instance.createProject(FreeStyleProject, jobName)
+    job.setDescription("Job created by Groovy script")
+    job.save()
+    println "Created job ${jobName}"
+    
+    // Trigger the build
+    def build = job.scheduleBuild2(0, new Cause.UserCause())
+    println "Triggered build for job ${jobName}"
+}
